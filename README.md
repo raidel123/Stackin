@@ -13,7 +13,7 @@ GitHub Repo: https://github.com/raidel123/Stackin.git
 ```
     $ sudo apt-get install python-pip
 ```
-* Curl
+* curl
 ```
     $ sudo apt-get install curl
 ```
