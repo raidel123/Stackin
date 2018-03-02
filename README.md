@@ -8,7 +8,7 @@ GitHub Repo: https://github.com/raidel123/Stackin.git
 Author: Raidel Hernandez
 
 
-### [Run Installer]
+### Run Installer and Script
 If running the program for the first time, the script below will:
     - install a virtual environment and start it
     - install all the requirements[.txt] to run stackin.py
