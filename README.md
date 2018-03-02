@@ -7,9 +7,13 @@ Author: Raidel Hernandez
 
 GitHub Repo: https://github.com/raidel123/Stackin.git
 
-## System Requirements:
+## System Requirements(Ubuntu 16.04):
 
-* curl
+* pip
+```
+    $ sudo apt-get install python-pip
+```
+* Curl
 ```
     $ sudo apt-get install curl
 ```
