@@ -7,7 +7,14 @@ Author: Raidel Hernandez
 
 GitHub Repo: https://github.com/raidel123/Stackin.git
 
-## Install Dependencies
+## System Requirements:
+
+* curl
+```
+    $ sudo apt-get install curl
+```
+
+## Install Dependencies:
 
 ### Run Installer and Program
 If running the program for the first time, the script below will:
@@ -20,7 +27,7 @@ Issue the following command:
     $ ./runall
 ```
 
-## Run Program Only
+## Run Program Only:
 
 If  virtual environment is set-up and requirements.txt is installed.
 run the program with the commands below (both do the same):  
