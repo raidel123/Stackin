@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+# install the virtual environment to run python
+virtualenv venv
+
+# activate the virtual environment
+source venv/bin/activate
+
+# install all required modules
+pip install -r requirements.txt
+
+# run the main program
+python stackin.py
+
+# de-activate the virtual environment
+deactivate
