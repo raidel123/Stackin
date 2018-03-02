@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# clone submodules [ apache/pdfbox ]
+git submodule update --init --recursive
+
 # install the virtual environment to run python
 virtualenv venv
 
