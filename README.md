@@ -4,11 +4,9 @@
 ##Mining Issue Trackers and StackOverflow
 
 GitHub Repo: https://github.com/raidel123/Stackin.git
---------------------------------------------------------------------------#
 
 Author: Raidel Hernandez
 
---------------------------------------------------------------------------#
 
 ### [Run Installer]
 If running the program for the first time, the script below will:
@@ -20,9 +18,8 @@ Issue the following command:
     '''
     $ ./runall
     '''
-# --------------------------------------------------------------------------#
 
-### [Run Script]
+### Run Script
 If  virtual environment is set-up and requirements.txt is installed.
 run the program with the commands below (both do the same):  
 
@@ -30,7 +27,8 @@ run the program with the commands below (both do the same):
   $ ./run
   '''
 
-or:
+####or:
+
   '''
   $ python stackin.py
   '''
