@@ -3,10 +3,9 @@
 
 ## Mining Issue Trackers and StackOverflow
 
-GitHub Repo: https://github.com/raidel123/Stackin.git
-
 Author: Raidel Hernandez
 
+GitHub Repo: https://github.com/raidel123/Stackin.git
 
 ### Run Installer and Script
 If running the program for the first time, the script below will:
