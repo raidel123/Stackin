@@ -21,7 +21,7 @@ GitHub Repo: https://github.com/raidel123/Stackin.git
 ## Install Dependencies:
 
 ### Run Installer and Program
-If running the program for the first time, the script below will:
+If running the program for the first time, run the script below to:
 * Install a virtual environment and start it
 * Install all the requirements[.txt] to run stackin.py
 * Run the application using the python interpreter
@@ -34,7 +34,7 @@ Issue the following command:
 ## Run Program Only:
 
 If  virtual environment is set-up and requirements.txt is installed.
-run the program with the commands below (both do the same):  
+Run the program with the either command below (both do the same):  
 
 ```
     $ ./run
