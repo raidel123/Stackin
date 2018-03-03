@@ -22,10 +22,9 @@ GitHub Repo: https://github.com/raidel123/Stackin.git
 
 ### Run Installer and Program
 If running the program for the first time, run the script below to:
-* Install a virtual environment and start it
+* Install a virtual environment and start it.
 * Install all the requirements[.txt] to run stackin.py
-* Run the application using the python interpreter
-Issue the following command:
+* Run the application using the python interpreter.
 
 ```
     $ ./runall
