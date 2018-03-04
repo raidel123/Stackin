@@ -12,6 +12,9 @@ source venv/bin/activate
 # install all required modules
 pip install -r requirements.txt
 
+# clear screen
+clear
+
 # run the main program
 python stackin.py
 
