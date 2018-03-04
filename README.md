@@ -9,13 +9,17 @@ GitHub Repo: https://github.com/raidel123/Stackin.git
 
 ## System Requirements(Ubuntu 16.04):
 
+* curl
+```
+    $ sudo apt-get install curl
+```
 * pip
 ```
     $ sudo apt-get install python-pip
 ```
-* curl
+* virtualenv
 ```
-    $ sudo apt-get install curl
+    $ sudo pip install virtualenv
 ```
 
 ## Install Dependencies:
