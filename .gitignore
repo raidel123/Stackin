@@ -103,5 +103,7 @@ ENV/
 # mypy
 .mypy_cache/
 
-# ignores not included in python template: 
+# ignores not included in python template:
 hw4_data.csv
+csv_database.db
+csv_database.db-journal

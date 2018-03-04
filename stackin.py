@@ -1,12 +1,30 @@
 #!/usr/bin/env python
 import os
 import pandas as pd
+import sqlite3
 
-def foo():
-	#with open('hw4_data.csv') as f:
-	data = pd.read_csv('hw4_data.csv')
-	print data
 
+def createdb():
+	file = 'hw4_data.csv'
+	# print pd.read_csv(file, nrows=5)
+	connex = sqlite3.connect("csv_database.db")  # Opens file if exists, else creates file
+	cur = connex.cursor()  # This object lets us actually send messages to our DB and receive results
+
+	for chunk in pd.read_csv(file, chunksize=4, encoding='utf-8'):
+		chunk.to_sql(name="csv_table", con=connex, if_exists="append", index=False)  #"name" is name of table
+		# print(chunk.iloc[0, 1])
+
+	'''
+	chunksize = 100000
+	i = 0
+	j = 1
+	for df in pd.read_csv(file, chunksize=chunksize, iterator=True):
+	      df = df.rename(columns={c: c.replace(' ', '') for c in df.columns})
+	      df.index += j
+	      i+=1
+	      df.to_sql('table', csv_database, if_exists='append')
+	      j = df.index[-1] + 1
+	'''
 
 #---------------------------------------------------------------------------
 ############################################################################
@@ -17,7 +35,7 @@ if __name__ == "__main__":
 
 	#-----------------------------------------------------------------------
 	print "\t(3.1) :\n"
-	foo()
+	createdb()
 	print
 
 	#-----------------------------------------------------------------------
