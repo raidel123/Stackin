@@ -8,7 +8,10 @@ Author: Raidel Hernandez
 GitHub Repo: https://github.com/raidel123/Stackin.git
 
 ## System Requirements(Ubuntu 16.04):
-
+* git
+'''
+    $ sudo apt-get install git
+'''
 * curl
 ```
     $ sudo apt-get install curl
