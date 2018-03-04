@@ -10,6 +10,7 @@ import calendar
 from subprocess import PIPE
 from tabulate import tabulate
 from datetime import datetime
+from scipy.stats.stats import pearsonr
 
 #---------------------------------------------------------------------------
 # Global Variables
@@ -262,9 +263,29 @@ def BugPResolutionTime(issues):
 #---------------------------------------------------------------------------
 # 1.10
 def LinearCorrelation(issues):
+	correlation_data = {}
+	for issue in issues:
+		issue_name = issue['fields']['issuetype']['name']
+		issue_status = issue['fields']['status']['name']
+		if issue_name == "Bug" and (issue_status == "Closed" or issue_status == "Resolved"):
+			created = (issue['fields']['created']).split('+')[0]
+			resolved = (issue['fields']['resolutiondate']).split('+')[0]
 
+			created_date = datetime.strptime(created, '%Y-%m-%dT%H:%M:%S.%f')
+			resolved_date = datetime.strptime(resolved, '%Y-%m-%dT%H:%M:%S.%f')
+			delta = resolved_date - created_date
+			watchers = issue['fields']['watches']['watchCount']
 
-	print '\t\t',
+			correlation_data[issue['key']] = [delta, watchers]
+
+	x = [value[0].total_seconds() for value in correlation_data.values()]
+	y = [value[1] for value in correlation_data.values()]
+
+	corr_coef, p_value = pearsonr(x, y)
+	print '\t\tPearson Correlation:', corr_coef, '\n'
+	print '\t\tP-Value: ', p_value, '\n'
+
+	return correlation_data
 
 
 ############################################################################
