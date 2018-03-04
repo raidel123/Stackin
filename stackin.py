@@ -133,13 +133,13 @@ def MonthlyIssues(issues):
 	for key in sorted(monthly_issues.keys()):
 		monthly_count.append([key[0], str(key[1]) + '-' + calendar.month_name[key[1]], monthly_issues[key]])
 
-	print '\t\tFirst Bug Reported:', min(bug_dates)
-	print '\t\tLast Bug Reported :', max(bug_dates)
+	print '\t\ta) First Bug Reported:', min(bug_dates)
+	print '\t\tb) Last Bug Reported :', max(bug_dates)
 	print
 
+	print '\t\tc) All Bugs Reported By Year, Month:'
 	tab_list = 	tabulate(monthly_count,
 				headers=["Year", "Month", "(#) Bugs Reported"]).split('\n')
-
 	for list in tab_list:
 		print '\t\t', list
 
@@ -170,7 +170,7 @@ def BugsPriorityField(issues):
 		if issue_name == "Bug" and priority is not None:
 			priority_names.append(issue['fields']['priority']['name'])
 
-			priority_names = sorted(list(set(priority_names)))
+	priority_names = sorted(list(set(priority_names)))
 	for item in priority_names:
 		print '\t\t', item
 
@@ -179,14 +179,63 @@ def BugsPriorityField(issues):
 #---------------------------------------------------------------------------
 # 1.8
 def BugResolutionTime(issues):
+	resolution_delta = []
+	for issue in issues:
+		issue_name = issue['fields']['issuetype']['name']
+		issue_status = issue['fields']['status']['name']
+		if issue_name == "Bug" and (issue_status == "Closed" or issue_status == "Resolved"):
+			created = (issue['fields']['created']).split('+')[0]
+			resolved = (issue['fields']['resolutiondate']).split('+')[0]
 
+			created_date = datetime.strptime(created, '%Y-%m-%dT%H:%M:%S.%f')
+			resolved_date = datetime.strptime(resolved, '%Y-%m-%dT%H:%M:%S.%f')
+			delta = resolved_date - created_date
 
-	print '\t\t',
+			resolution_delta.append(delta)
+
+	print '\t\t a) Average Time from issue report to resolution :'
+	print '\t\t\t', reduce(lambda x, y: x + y, resolution_delta) / len(resolution_delta)
+	print
+	print '\t\t b) Longest Time from issue report to resolution :'
+	print '\t\t\t', max(resolution_delta)
+	print
+	print '\t\t c) Shortest Time from issue report to resolution:'
+	print '\t\t\t', min(resolution_delta)
+	print
+
+	return resolution_delta
 
 #---------------------------------------------------------------------------
 # 1.9
 def BugPResolutionTime(issues):
+	priority_delta = {}
 
+	resolution_delta = []
+	for issue in issues:
+		issue_name = issue['fields']['issuetype']['name']
+		issue_status = issue['fields']['status']['name']
+
+		if issue_name == "Bug" and (issue_status == "Closed" or issue_status == "Resolved"):
+			created = (issue['fields']['created']).split('+')[0]
+			resolved = (issue['fields']['resolutiondate']).split('+')[0]
+
+			created_date = datetime.strptime(created, '%Y-%m-%dT%H:%M:%S.%f')
+			resolved_date = datetime.strptime(resolved, '%Y-%m-%dT%H:%M:%S.%f')
+			delta = resolved_date - created_date
+
+			resolution_delta.append(delta)
+
+	print '\t\t a) Average Time from issue report to resolution :'
+	print '\t\t\t', reduce(lambda x, y: x + y, resolution_delta) / len(resolution_delta)
+	print
+	print '\t\t b) Longest Time from issue report to resolution :'
+	print '\t\t\t', max(resolution_delta)
+	print
+	print '\t\t c) Shortest Time from issue report to resolution:'
+	print '\t\t\t', min(resolution_delta)
+	print
+
+	return resolution_delta
 
 	print '\t\t',
 
