@@ -141,7 +141,7 @@ def MonthlyIssues(issues):
 	tab_list = 	tabulate(monthly_count,
 				headers=["Year", "Month", "(#) Bugs Reported"]).split('\n')
 	for list in tab_list:
-		print '\t\t', list
+		print '\t\t\t', list
 
 	return monthly_issues
 
@@ -193,13 +193,13 @@ def BugResolutionTime(issues):
 
 			resolution_delta.append(delta)
 
-	print '\t\t a) Average Time from issue report to resolution :'
+	print '\t\t a) Average Time:'
 	print '\t\t\t', reduce(lambda x, y: x + y, resolution_delta) / len(resolution_delta)
 	print
-	print '\t\t b) Longest Time from issue report to resolution :'
+	print '\t\t b) Longest Time:'
 	print '\t\t\t', max(resolution_delta)
 	print
-	print '\t\t c) Shortest Time from issue report to resolution:'
+	print '\t\t c) Shortest Time:'
 	print '\t\t\t', min(resolution_delta)
 	print
 
@@ -210,12 +210,18 @@ def BugResolutionTime(issues):
 def BugPResolutionTime(issues):
 	priority_delta = {}
 
-	resolution_delta = []
 	for issue in issues:
 		issue_name = issue['fields']['issuetype']['name']
 		issue_status = issue['fields']['status']['name']
 
 		if issue_name == "Bug" and (issue_status == "Closed" or issue_status == "Resolved"):
+			priority = issue['fields']['priority']
+
+			if priority is None:
+				continue
+
+			priority_name = issue['fields']['priority']['name']
+
 			created = (issue['fields']['created']).split('+')[0]
 			resolved = (issue['fields']['resolutiondate']).split('+')[0]
 
@@ -223,21 +229,35 @@ def BugPResolutionTime(issues):
 			resolved_date = datetime.strptime(resolved, '%Y-%m-%dT%H:%M:%S.%f')
 			delta = resolved_date - created_date
 
-			resolution_delta.append(delta)
+			if priority_name in priority_delta:
+				priority_delta[priority_name].append(delta)
+			else:
+				priority_delta[priority_name] = [delta]
 
-	print '\t\t a) Average Time from issue report to resolution :'
-	print '\t\t\t', reduce(lambda x, y: x + y, resolution_delta) / len(resolution_delta)
-	print
-	print '\t\t b) Longest Time from issue report to resolution :'
-	print '\t\t\t', max(resolution_delta)
-	print
-	print '\t\t c) Shortest Time from issue report to resolution:'
-	print '\t\t\t', min(resolution_delta)
-	print
+	for priority, deltas in sorted(priority_delta.iteritems()):
 
-	return resolution_delta
+		print '\t\tPriority:', priority
+		print '\t\t----------------------------------------------------------'
+		print '\t\t a) Average Time:'
+		print '\t\t\t', reduce(lambda x, y: x + y, deltas) / len(deltas), '\n'
+		print '\t\t b) Longest Time:'
+		print '\t\t\t', max(deltas), '\n'
+		print '\t\t c) Shortest Time:'
+		print '\t\t\t', min(deltas), '\n'
 
-	print '\t\t',
+	print '\t\t=========================================================='
+	print '\t\tObservations:'
+	print '\t\t=========================================================='
+	print '\t\t From the results gathered above, issues marked as "Major"'
+	print '\t\t are on average resolved/closed much faster than issues'
+	print '\t\t marked as "Minor". However, on average issues that are'
+	print '\t\t marked as "Blocker", or "Trivial" are resolved faster than'
+	print '\t\t "Major" issues. An Issue marked as "Major" holds by far'
+	print '\t\t the shortest resolution time, resolved within 19 seconds.'
+
+	return priority_delta
+
+
 
 #---------------------------------------------------------------------------
 # 1.10
