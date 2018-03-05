@@ -47,16 +47,9 @@ If running the program for the first time, run the script below to:
 ```
 
 ## Run Program Only:
-
-If  virtual environment is set-up and requirements.txt is installed.
-Run the program with the either command below (both do the same):  
+If  virtual environment is set-up (active) and requirements.txt is installed.
+Run the program with the command below:  
 
 ```
     $ ./run.sh
-```
-
-#### or:
-
-```
-    $ python stackin.py
 ```
