@@ -7,6 +7,11 @@ Author: Raidel Hernandez
 
 GitHub Repo: https://github.com/raidel123/Stackin.git
 
+## Languages/Frameworks Used:
+* Python
+* SQLite3
+* Bash Scripting
+
 ## System Requirements(Ubuntu 16.04):
 * git
 ```
@@ -19,6 +24,10 @@ GitHub Repo: https://github.com/raidel123/Stackin.git
 * pip
 ```
     $ sudo apt-get install python-pip
+```
+* python-tk
+```
+    $ sudo apt-get install python-tk
 ```
 * virtualenv
 ```
@@ -34,7 +43,7 @@ If running the program for the first time, run the script below to:
 * Run the application using the python interpreter.
 
 ```
-    $ ./runall
+    $ ./runall.sh
 ```
 
 ## Run Program Only:
@@ -43,7 +52,7 @@ If  virtual environment is set-up and requirements.txt is installed.
 Run the program with the either command below (both do the same):  
 
 ```
-    $ ./run
+    $ ./run.sh
 ```
 
 #### or:

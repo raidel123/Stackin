@@ -15,8 +15,8 @@ pip install -r requirements.txt
 # clear screen
 clear
 
-# run the main program
-python jirin.py
+# run the main python scripts
+./run.sh
 
 # de-activate the virtual environment
 deactivate
