@@ -155,7 +155,7 @@ def TagFrequency():
 # 3.8
 def TopUsers():
 	df = pd.read_sql_query("SELECT Id FROM csv_table WHERE PostTypeID=2;", conn)
-	users_list = df['Tags'].values.tolist()
+	users_list = df['Id'].values.tolist()
 
 	users = GetUsers(users_list)
 
