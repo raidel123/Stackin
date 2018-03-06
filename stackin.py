@@ -37,6 +37,35 @@ def PlotDistribution(df, o_title, n_title):
 	plt.show()
 
 #---------------------------------------------------------------------------
+# extract tags from list
+def GetTags(tags_list):
+	tags = {}
+	for list in tags_list:
+		t_list = list.split('>')
+		for i_tag in t_list:
+			key = i_tag[1:]
+
+			if key == '':
+				continue
+
+			if key not in tags:
+				tags[key] = 1
+			else:
+				tags[key] += 1
+
+	return tags
+
+#---------------------------------------------------------------------------
+def GetUsers(tags_list):
+	users = {}
+	for user in tags_list:
+		if user not in users:
+			users[user] = 1
+		else:
+			users[user] += 1
+
+	return tags
+#---------------------------------------------------------------------------
 # 3.1
 def QueryAnswerCount():
 
@@ -108,18 +137,44 @@ def PearsonCorrelation():
 
 #---------------------------------------------------------------------------
 # 3.7
+def TagFrequency():
 
+	df = pd.read_sql_query("SELECT Tags FROM csv_table WHERE PostTypeID=1;", conn)
+	tags_list = df['Tags'].values.tolist()
+
+	tags = GetTags(tags_list)
+
+	count = 0
+	for key, value in sorted(tags.iteritems(), key=lambda (k,v): (v,k), reverse=True):
+		count += 1
+		print '\t\t', count, ") %s: %s" % (key, value)
+		if count == 10:
+			break
 
 #---------------------------------------------------------------------------
 # 3.8
+def TopUsers():
+	df = pd.read_sql_query("SELECT Id FROM csv_table WHERE PostTypeID=2;", conn)
+	users_list = df['Tags'].values.tolist()
 
+	users = GetUsers(users_list)
+
+	count = 0
+	for key, value in sorted(users.iteritems(), key=lambda (k,v): (v,k), reverse=True):
+		count += 1
+		print '\t\t', count, ") %s: %s" % (key, value)
+		if count == 10:
+			break
 
 #---------------------------------------------------------------------------
 # 3.9
-
+def TopTagsWAnswer():
+	print
 
 #---------------------------------------------------------------------------
 # 3.10
+def TopTagsWAAnswer():
+	print
 
 ############################################################################
 
@@ -161,27 +216,31 @@ if __name__ == "__main__":
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.6) Correlation Between the Question Score and Number of Answers:\n"
-	PearsonCorrelation()
+	# PearsonCorrelation()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
-	print "\t(3.7) :\n"
+	print "\t(3.7) Top 10 Frequent Tags:\n"
+	# TagFrequency()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
-	print "\t(3.8) :\n"
+	print "\t(3.8) Top 10 Users by Number of Questions Answered:\n"
+	TopUsers()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
-	print "\t(3.9) :\n"
+	print "\t(3.9) Top 5 Frequent Tags of Questions Without an Answer:\n"
+	TopTagsWAnswer()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
-	print "\t(3.10) :\n"
+	print "\t(3.10) Top 5 Frequent Tags of Questions Without an Accepted Answer:\n"
+	TopTagsWAAnswer()
 	print
 
 	print
