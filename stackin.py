@@ -1,9 +1,10 @@
 #!/usr/bin/env python
 import os
 import sqlite3
-
 import pandas as pd
 import matplotlib.pyplot as plt
+
+from scipy.stats.stats import pearsonr
 
 #---------------------------------------------------------------------------
 # Globals
@@ -95,7 +96,15 @@ def AcceptedUSDistribution():
 
 #---------------------------------------------------------------------------
 # 3.6
+def PearsonCorrelation():
+	df = pd.read_sql_query("SELECT Score, AnswerCount FROM csv_table WHERE PostTypeID=1;", conn)
 
+	x = df['Score'].values.tolist()
+	y = df['AnswerCount'].values.tolist()
+
+	corr_coef, p_value = pearsonr(x, y)
+	print '\t\tPearson Correlation:', corr_coef, '\n'
+	print '\t\tP-Value: ', p_value
 
 #---------------------------------------------------------------------------
 # 3.7
@@ -146,12 +155,13 @@ if __name__ == "__main__":
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.5) Distribution of Scores for Unaccepted Answers:\n"
-	AcceptedUSDistribution()
+	# AcceptedUSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
-	print "\t(3.6) :\n"
+	print "\t(3.6) Correlation Between the Question Score and Number of Answers:\n"
+	PearsonCorrelation()
 	print
 
 	#-----------------------------------------------------------------------
