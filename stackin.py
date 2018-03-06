@@ -82,11 +82,11 @@ def QueryAnswerCount():
 			num_answers  += row[0]
 			num_not_null += 1
 
-	print '\t\t\tTotal Answers:', num_answers
-	print '\t\t\tNumber of Questions:', len(rows)
-	print '\t\t\t------------------------------'
-	print '\t\t\tAverage:', num_answers/len(rows)
-	print '\t\t\t------------------------------'
+	print '\t\tTotal Answers:', num_answers
+	print '\t\tNumber of Questions:', len(rows)
+	print '\t\t------------------------------'
+	print '\t\tAverage:', num_answers/len(rows)
+	print '\t\t------------------------------'
 
 #---------------------------------------------------------------------------
 # 3.2
