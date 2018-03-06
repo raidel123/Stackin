@@ -25,6 +25,17 @@ def createdb(file=None):
 		chunk.to_sql(name="csv_table", con=conn, if_exists="append", index=False)  #"name" is name of table
 
 #---------------------------------------------------------------------------
+# Plot Distribution
+def PlotDistribution(df, o_title, n_title):
+	df.plot(kind='box', vert=False, showfliers=True, title=o_title)
+	df.plot(kind='box', vert=False, showfliers=False, title=n_title)
+	distribution = df.describe().to_string().split('\n')[1:]
+
+	for field in distribution:
+		print '\t\t', field
+	plt.show()
+
+#---------------------------------------------------------------------------
 # 3.1
 def QueryAnswerCount():
 
@@ -52,45 +63,35 @@ def QueryAnswerCount():
 def QuestionSDistribution():
 
 	df = pd.read_sql_query("SELECT Score FROM csv_table WHERE PostTypeID=1;", conn)
-	df.plot(kind='box', vert=False, showfliers=True, title='(3.2a)Question Score Distribution (Outliers)')
-	df.plot(kind='box', vert=False, showfliers=False, title='(3.2b)Question Score Distribution (No-Outliers)')
-	distribution = df.describe().to_string().split('\n')[1:]
-
-	for field in distribution:
-		print '\t\t', field
-	plt.show()
+	o_title = '(3.2a) Question Score Distribution (Outliers)'
+	n_title = '(3.2b) Question Score Distribution (No-Outliers)'
+	PlotDistribution(df, o_title, n_title)
 
 #---------------------------------------------------------------------------
 # 3.3
 def AnswerSDistribution():
 	df = pd.read_sql_query("SELECT Score FROM csv_table WHERE PostTypeID=2;", conn)
-	df.plot(kind='box', vert=False, showfliers=True, title='(3.3a)Answer Score Distribution (Outliers)')
-	df.plot(kind='box', vert=False, showfliers=False, title='(3.3b)Answer Score Distribution (No-Outliers)')
-	distribution = df.describe().to_string().split('\n')[1:]
-
-	for field in distribution:
-		print '\t\t', field
-	plt.show()
+	o_title = '(3.3a) Answer Score Distribution (Outliers)'
+	n_title = '(3.3b) Answer Score Distribution (No-Outliers)'
+	PlotDistribution(df, o_title, n_title)
 
 #---------------------------------------------------------------------------
 # 3.4
 def AcceptedASDistribution():
 	df = pd.read_sql_query("SELECT Score FROM csv_table WHERE PostTypeID=2 AND Id IN (SELECT AcceptedAnswerId FROM csv_table WHERE PostTypeID=1);", conn)
-	df.plot(kind='box', vert=False, showfliers=True, title='(3.4a) Accepted Answer Score Distribution (Outliers)')
-	df.plot(kind='box', vert=False, showfliers=False, title='(3.4b) Accepted Answer Score Distribution (No-Outliers)')
-	distribution = df.describe().to_string().split('\n')[1:]
-
-	for field in distribution:
-		print '\t\t', field
-	plt.show()
-
-
-	print '\t\t'
-	# print df
+	o_title = '(3.4a) Accepted Answer Score Distribution (Outliers)'
+	n_title = '(3.4b) Accepted Answer Score Distribution (No-Outliers)'
+	PlotDistribution(df, o_title, n_title)
 
 #---------------------------------------------------------------------------
 # 3.5
-
+def AcceptedUSDistribution():
+	# df = pd.read_sql_query("SELECT Score FROM csv_table WHERE PostTypeID=2 AND Id IS NOT IN (SELECT AcceptedAnswerId FROM csv_table WHERE PostTypeID=1);", conn)
+	df = pd.read_sql_query("SELECT Score FROM csv_table WHERE PostTypeID=2 AND Id NOT IN (SELECT AcceptedAnswerId FROM csv_table WHERE PostTypeID=1 AND AcceptedAnswerId IS NOT NULL);", conn)
+	o_title = '(3.5a) Unaccepted Answer Score Distribution (Outliers)'
+	n_title = '(3.5b) Unaccepted Answer Score Distribution (No-Outliers)'
+	PlotDistribution(df, o_title, n_title)
+	# print df
 
 #---------------------------------------------------------------------------
 # 3.6
@@ -137,38 +138,39 @@ if __name__ == "__main__":
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO :
+	# TODO : Uncomment query
 	print "\t(3.4) Distribution of Scores for Accepted Answers:\n"
-	AcceptedASDistribution()
+	# AcceptedASDistribution()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO :
-	print "\t(3.5) :\n"
+	# TODO : Uncomment query
+	print "\t(3.5) Distribution of Scores for Unaccepted Answers:\n"
+	AcceptedUSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO :
+	# TODO : Uncomment query
 	print "\t(3.6) :\n"
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO :
+	# TODO : Uncomment query
 	print "\t(3.7) :\n"
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO :
+	# TODO : Uncomment query
 	print "\t(3.8) :\n"
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO :
+	# TODO : Uncomment query
 	print "\t(3.9) :\n"
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO :
+	# TODO : Uncomment query
 	print "\t(3.10) :\n"
 	print
 
