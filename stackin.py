@@ -29,6 +29,7 @@ def createdb(file=None):
 def QueryAnswerCount():
 
 	# cur.execute("SELECT AVG(AnswerCount) FROM csv_table")
+	# df = pd.read_sql_query("SELECT Score FROM csv_table WHERE PostTypeID=1;", conn)
 	cur.execute("SELECT AnswerCount FROM csv_table WHERE PostTypeID=1;")
 
 	rows = cur.fetchall()
@@ -74,7 +75,18 @@ def AnswerSDistribution():
 #---------------------------------------------------------------------------
 # 3.4
 def AcceptedASDistribution():
+	df = pd.read_sql_query("SELECT Score FROM csv_table WHERE PostTypeID=2 AND Id IN (SELECT AcceptedAnswerId FROM csv_table WHERE PostTypeID=1);", conn)
+	df.plot(kind='box', vert=False, showfliers=True, title='(3.4a) Accepted Answer Score Distribution (Outliers)')
+	df.plot(kind='box', vert=False, showfliers=False, title='(3.4b) Accepted Answer Score Distribution (No-Outliers)')
+	distribution = df.describe().to_string().split('\n')[1:]
+
+	for field in distribution:
+		print '\t\t', field
+	plt.show()
+
+
 	print '\t\t'
+	# print df
 
 #---------------------------------------------------------------------------
 # 3.5
@@ -109,25 +121,25 @@ if __name__ == "__main__":
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.1) Average Number of Answers per Question:\n"
-	QueryAnswerCount()
+	# QueryAnswerCount()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.2) Distribution of Scores for Questions:\n"
-	QuestionSDistribution()
+	# QuestionSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.3) Distribution of Scores for Answers:\n"
-	AnswerSDistribution()
+	# AnswerSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO :
-	print "\t(3.4) :\n"
-	# AcceptedASDistribution()
+	print "\t(3.4) Distribution of Scores for Accepted Answers:\n"
+	AcceptedASDistribution()
 	print
 
 	#-----------------------------------------------------------------------
