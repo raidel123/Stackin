@@ -56,15 +56,15 @@ def GetTags(tags_list):
 	return tags
 
 #---------------------------------------------------------------------------
-def GetUsers(tags_list):
+def GetUsers(users_list):
 	users = {}
-	for user in tags_list:
+	for user in users_list:
 		if user not in users:
 			users[user] = 1
 		else:
 			users[user] += 1
 
-	return tags
+	return users
 #---------------------------------------------------------------------------
 # 3.1
 def QueryAnswerCount():
@@ -154,8 +154,8 @@ def TagFrequency():
 #---------------------------------------------------------------------------
 # 3.8
 def TopUsers():
-	df = pd.read_sql_query("SELECT Id FROM csv_table WHERE PostTypeID=2;", conn)
-	users_list = df['Id'].values.tolist()
+	df = pd.read_sql_query("SELECT OwnerUserId FROM csv_table WHERE PostTypeID=2;", conn)
+	users_list = df['OwnerUserId'].values.tolist()
 
 	users = GetUsers(users_list)
 
@@ -169,12 +169,32 @@ def TopUsers():
 #---------------------------------------------------------------------------
 # 3.9
 def TopTagsWAnswer():
-	print
+	df = pd.read_sql_query("SELECT Tags FROM csv_table WHERE PostTypeID=1 AND AnswerCount=0;", conn)
+	tags_list = df['Tags'].values.tolist()
+
+	tags = GetTags(tags_list)
+
+	count = 0
+	for key, value in sorted(tags.iteritems(), key=lambda (k,v): (v,k), reverse=True):
+		count += 1
+		print '\t\t', count, ") %s: %s" % (key, value)
+		if count == 5:
+			break
 
 #---------------------------------------------------------------------------
 # 3.10
 def TopTagsWAAnswer():
-	print
+	df = pd.read_sql_query("SELECT Tags FROM csv_table WHERE PostTypeID=1 AND AcceptedAnswerId IS NULL;", conn)
+	tags_list = df['Tags'].values.tolist()
+
+	tags = GetTags(tags_list)
+
+	count = 0
+	for key, value in sorted(tags.iteritems(), key=lambda (k,v): (v,k), reverse=True):
+		count += 1
+		print '\t\t', count, ") %s: %s" % (key, value)
+		if count == 5:
+			break
 
 ############################################################################
 
@@ -186,43 +206,43 @@ if __name__ == "__main__":
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.1) Average Number of Answers per Question:\n"
-	# QueryAnswerCount()
+	QueryAnswerCount()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.2) Distribution of Scores for Questions:\n"
-	# QuestionSDistribution()
+	QuestionSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.3) Distribution of Scores for Answers:\n"
-	# AnswerSDistribution()
+	AnswerSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.4) Distribution of Scores for Accepted Answers:\n"
-	# AcceptedASDistribution()
+	AcceptedASDistribution()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.5) Distribution of Scores for Unaccepted Answers:\n"
-	# AcceptedUSDistribution()
+	AcceptedUSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.6) Correlation Between the Question Score and Number of Answers:\n"
-	# PearsonCorrelation()
+	PearsonCorrelation()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
 	print "\t(3.7) Top 10 Frequent Tags:\n"
-	# TagFrequency()
+	TagFrequency()
 	print
 
 	#-----------------------------------------------------------------------
