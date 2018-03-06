@@ -29,7 +29,7 @@ def createdb(file=None):
 def QueryAnswerCount():
 
 	# cur.execute("SELECT AVG(AnswerCount) FROM csv_table")
-	cur.execute("SELECT AnswerCount FROM csv_table")
+	cur.execute("SELECT AnswerCount FROM csv_table WHERE PostTypeID=1;")
 
 	rows = cur.fetchall()
 
@@ -40,37 +40,36 @@ def QueryAnswerCount():
 			num_answers  += row[0]
 			num_not_null += 1
 
-	print '\t\tExcluding Null Entries:'
-	print '\t\t\t------------------------------'
-	print '\t\t\tAverage:', num_answers/num_not_null
-	print '\t\t\t------------------------------'
 	print '\t\t\tTotal Answers:', num_answers
-	print '\t\t\tNumber of Questions:', num_not_null
-	print
-
-	print '\t\tIncluding Null Entries:'
+	print '\t\t\tNumber of Questions:', len(rows)
 	print '\t\t\t------------------------------'
 	print '\t\t\tAverage:', num_answers/len(rows)
 	print '\t\t\t------------------------------'
-	print '\t\t\tTotal Answers:', num_answers
-	print '\t\t\tNumber of Questions:', len(rows)
 
 #---------------------------------------------------------------------------
 # 3.2
 def QuestionSDistribution():
-	# conn = sqlite3.connect("csv_database.db")
-	# cur = conn.cursor()
 
-	# cur.execute("")
-	df = pd.read_sql_query("SELECT Id, Score FROM csv_table", conn)
-	#print df
-	#print df['Id'].values
-	#print df['Score'].values
+	df = pd.read_sql_query("SELECT Score FROM csv_table WHERE PostTypeID=1;", conn)
+	df.plot(kind='box', vert=False, showfliers=True, title='(3.2a)Question Score Distribution (Outliers)')
+	df.plot(kind='box', vert=False, showfliers=False, title='(3.2b)Question Score Distribution (No-Outliers)')
+	distribution = df.describe().to_string().split('\n')[1:]
+
+	for field in distribution:
+		print '\t\t', field
+	plt.show()
 
 #---------------------------------------------------------------------------
 # 3.3
 def AnswerSDistribution():
-	print '\t\t'
+	df = pd.read_sql_query("SELECT Score FROM csv_table WHERE PostTypeID=2;", conn)
+	df.plot(kind='box', vert=False, showfliers=True, title='(3.3a)Answer Score Distribution (Outliers)')
+	df.plot(kind='box', vert=False, showfliers=False, title='(3.3b)Answer Score Distribution (No-Outliers)')
+	distribution = df.describe().to_string().split('\n')[1:]
+
+	for field in distribution:
+		print '\t\t', field
+	plt.show()
 
 #---------------------------------------------------------------------------
 # 3.4
@@ -98,7 +97,7 @@ def AcceptedASDistribution():
 
 
 #---------------------------------------------------------------------------
-# 3.1-
+# 3.10
 
 ############################################################################
 
@@ -109,60 +108,56 @@ if __name__ == "__main__":
 
 	#-----------------------------------------------------------------------
 	# TODO : Uncomment query
-	print "\t(3.1) :\n"
-	# QueryAnswerCount()
+	print "\t(3.1) Average Number of Answers per Question:\n"
+	QueryAnswerCount()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO :
-	print "\t(3.2) :\n"
-	QuestionSDistribution();
+	# TODO : Uncomment query
+	print "\t(3.2) Distribution of Scores for Questions:\n"
+	QuestionSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO :
-	print "\t(3.3) :\n"
-
+	# TODO : Uncomment query
+	print "\t(3.3) Distribution of Scores for Answers:\n"
+	AnswerSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO :
 	print "\t(3.4) :\n"
-
+	# AcceptedASDistribution()
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO :
 	print "\t(3.5) :\n"
-
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO :
 	print "\t(3.6) :\n"
-
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO :
 	print "\t(3.7) :\n"
-
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO :
 	print "\t(3.8) :\n"
-
 	print
 
 	#-----------------------------------------------------------------------
 	# TODO :
 	print "\t(3.9) :\n"
-
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO
+	# TODO :
 	print "\t(3.10) :\n"
+	print
 
 	print
