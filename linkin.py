@@ -176,13 +176,13 @@ if __name__ == "__main__":
     # print "\tDownloading reported issues on JIRA for pdfbox..."
 
     #-----------------------------------------------------------------------
-    print "\t(2.1) Maximun, Minimum, and Average Time Difference per Bug Fix:\n"
+    print "\t(2.1) Maximum, Minimum, and Average Time Difference per Bug Fix:\n"
     hashes = getHashes()
     CommitsFixBugs(hashes)
     print
 
     #-----------------------------------------------------------------------
-    print "\t(2.2) Maximun, Minimum, and Average Number of Files per Bug Fix:\n"
+    print "\t(2.2) Maximum, Minimum, and Average Number of Files per Bug Fix:\n"
     TimeDifferenceBugs()
     print
 
