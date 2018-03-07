@@ -204,61 +204,51 @@ if __name__ == "__main__":
 	# createdb()
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.1) Average Number of Answers per Question:\n"
 	QueryAnswerCount()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.2) Distribution of Scores for Questions:\n"
 	QuestionSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.3) Distribution of Scores for Answers:\n"
 	AnswerSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.4) Distribution of Scores for Accepted Answers:\n"
 	AcceptedASDistribution()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.5) Distribution of Scores for Unaccepted Answers:\n"
 	AcceptedUSDistribution()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.6) Correlation Between the Question Score and Number of Answers:\n"
 	PearsonCorrelation()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.7) Top 10 Frequent Tags:\n"
 	TagFrequency()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.8) Top 10 Users by Number of Questions Answered:\n"
 	TopUsers()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.9) Top 5 Frequent Tags of Questions Without an Answer:\n"
 	TopTagsWAnswer()
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Uncomment query
 	print "\t(3.10) Top 5 Frequent Tags of Questions Without an Accepted Answer:\n"
 	TopTagsWAAnswer()
 	print
