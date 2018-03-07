@@ -315,7 +315,6 @@ if __name__ == "__main__":
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO : Create a graph for the data output
 	print "\t(1.5) Monthly Issues Reported:\n"
 	MonthlyIssues(issues)
 	print
