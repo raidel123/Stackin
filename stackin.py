@@ -248,7 +248,7 @@ if __name__ == "__main__":
 	TopTagsWAnswer()
 	print
 
-	#-----------------------------------------------------------------------
+	#----------------------------------------------------------------------- 
 	print "\t(3.10) Top 5 Frequent Tags of Questions Without an Accepted Answer:\n"
 	TopTagsWAAnswer()
 	print
