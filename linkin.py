@@ -2,33 +2,128 @@
 
 import os
 import subprocess
+import glob
+import json
 
 from subprocess import PIPE
 
 #---------------------------------------------------------------------------
+# Globals
+PATH = os.getcwd()
+reports_dir = "pdfbox_issues"
+repo = "pdfbox"
 
+#---------------------------------------------------------------------------
+# Get short hashes for all commits
+def getHashes():
+    hashes = subprocess.check_output('git log --pretty=format:"%h"', shell=True)
+    hashes = hashes.split('\n')
 
+    #print "hashes:", hashes
+    return hashes
+
+#---------------------------------------------------------------------------
+# 1.1
+def IssueReport():
+
+    issues = []
+    issue_files = glob.glob(PATH + '/' + reports_dir + '/' + '*')
+    # print issue_files
+
+    for file in issue_files:
+        try:
+            with open(file) as f:
+                file = json.load(f)
+            issues.extend(file['issues'])
+    	except ValueError as e:
+            print('invalid json: %s' % e)
+            return None # or: raise
+
+    # print "\t\t", len(issues)
+
+    # print issues
+
+    return issues;
+
+#---------------------------------------------------------------------------
+# 1.3
+def BugsByName(issues):
+    bug_names = []
+    # print len(issues)
+    for issue in issues:
+        issue_name = issue['fields']['issuetype']['name']
+        issue_key = issue['key']
+        # print issue_key
+        if issue_name == "Bug":
+            # print issue_key
+            bug_names.append(issue_key)
+
+            '''
+            if issue_key in bug_names:
+                rc_per_cat[issue_name] += 1
+            else:
+                rc_per_cat[issue_name] = 1
+            '''
+
+    return bug_names
+
+#---------------------------------------------------------------------------
+def CommitsFixBugs(hashes):
+    commit_info = {}
+    bugs = BugsByName(IssueReport())
+    # print bugs
+    for hash in hashes:
+        # commits = subprocess.check_output('git log --name-only --oneline ' + hash, shell=True)
+        commits = subprocess.check_output('git show --pretty="format:%s" --name-only --oneline ' + hash, shell=True)
+        commits = commits.split('\n')[:-1]
+        #print "commits:", commits
+        commit_list = []
+        for commit in commits:
+            commit_list.append(commit.split('\n'))
+
+        commit_info[hash] = commit_list
+
+    files_changed = []
+    for key, value in commit_info.iteritems():
+        # print "verbose:",key, value
+        commit_msg = value[0][0]
+        if 'bug' in (commit_msg).lower() :
+            # print commit_msg
+            for bug_name in bugs:
+                # print bug_name
+                if bug_name in commit_msg:
+                    # print key, len(value)-1, value
+                    files_changed.append(len(value)-1)
+
+    print "\t\tMinimum Number of Files:", min(files_changed)
+    print "\t\tMaximum Number of Files:", max(files_changed)
+    print "\t\tAverage Number of Files:", sum(files_changed)/len(files_changed)
 
 ############################################################################
 
 if __name__ == "__main__":
-	print "[2] Linking commits with bug reports (50 points):\n"
-	# print "\tDownloading reported issues on JIRA for pdfbox..."
+    os.chdir(PATH + '/' + repo)
 
-	#-----------------------------------------------------------------------
-	# TODO :
-	print "\t(2.1) :\n"
+    print "[2] Linking commits with bug reports (50 points):\n"
+    # print "\tDownloading reported issues on JIRA for pdfbox..."
 
-	print
+    #-----------------------------------------------------------------------
+    # TODO :
+    print "\t(2.1) :\n"
+    hashes = getHashes()
+    CommitsFixBugs(hashes)
+    # git log --name-only --oneline
+    print
 
-	#-----------------------------------------------------------------------
-	# TODO :
-	print "\t(2.2) :\n"
+    #-----------------------------------------------------------------------
+    # TODO :
+    print "\t(2.2) :\n"
 
-	print
+    print
 
-	#-----------------------------------------------------------------------
+    #-----------------------------------------------------------------------
 
+    os.chdir(PATH)
 
 '''
 USEFUL OPERATIONS:
