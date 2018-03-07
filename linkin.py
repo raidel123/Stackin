@@ -114,7 +114,7 @@ def TimeDifferenceBugs():
     closed_commits = {}
 
     issues = IssueReport()
-    commits = subprocess.check_output('git log --pretty="format:%ad~%s"', shell=True)
+    commits = subprocess.check_output('git log --pretty="format:%cd~%s"', shell=True)
     # print 'decode:', commits.decode('utf-8')
 
     commits = commits.split('\n')[:-1]
