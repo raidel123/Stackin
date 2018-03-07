@@ -341,7 +341,6 @@ if __name__ == "__main__":
 	print
 
 	#-----------------------------------------------------------------------
-	# TODO
 	print "\t(1.10) Is there a Linear Correlation?:\n"
 	LinearCorrelation(issues)
 	print
