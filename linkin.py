@@ -6,6 +6,7 @@ import glob
 import json
 
 from subprocess import PIPE
+from datetime import datetime
 
 #---------------------------------------------------------------------------
 # Globals
@@ -68,6 +69,7 @@ def BugsByName(issues):
     return bug_names
 
 #---------------------------------------------------------------------------
+# 2.1
 def CommitsFixBugs(hashes):
     commit_info = {}
     bugs = BugsByName(IssueReport())
@@ -99,6 +101,72 @@ def CommitsFixBugs(hashes):
     print "\t\tMaximum Number of Files:", max(files_changed)
     print "\t\tAverage Number of Files:", sum(files_changed)/len(files_changed)
 
+#---------------------------------------------------------------------------
+# 2.2
+def TimeDifferenceBugs():
+    commit_info = {}
+    bugs = BugsByName(IssueReport())
+    # print bugs
+    # commits = subprocess.check_output('git log --name-only --oneline ' + hash, shell=True)
+    # commits = subprocess.check_output('git show --pretty="format:%s" --name-only --oneline ' + hash, shell=True)
+
+    times_commits = {}
+    closed_commits = {}
+
+    issues = IssueReport()
+    commits = subprocess.check_output('git log --pretty="format:%ad~%s"', shell=True)
+    # print 'decode:', commits.decode('utf-8')
+
+    commits = commits.split('\n')[:-1]
+
+    for commit in commits:
+        # print commits[i].split('~')
+        date_t = commit.split('~')[0].split('+')[0]
+        date = datetime.strptime(date_t, '%c ')
+
+        times_commits[date] = commit
+
+
+    times_commits = sorted(times_commits.iteritems())
+    #for key, value in times_commits:
+        # print key, value
+
+    for issue in issues:
+        issue_name = issue['fields']['issuetype']['name']
+        issue_status = issue['fields']['status']['name']
+        issue_key = issue['key']
+        if issue_name == "Bug" and (issue_status == "Closed" or issue_status == "Resolved"):
+            # created = (issue['fields']['created']).split('+')[0]
+            resolved = (issue['fields']['resolutiondate']).split('+')[0]
+
+            # created_date = datetime.strptime(created, '%Y-%m-%dT%H:%M:%S.%f')
+            resolved_date = datetime.strptime(resolved, '%Y-%m-%dT%H:%M:%S.%f')
+            closed_commits[issue_key] = resolved_date
+
+    time_difference = []
+    for j_key, j_value in closed_commits.iteritems():
+        for g_key, g_value in times_commits:
+            # print "verbose:", j_key, g_value
+            if j_key.lower() in g_value.decode('utf-8').lower() and 'bug' in g_value.decode('utf-8').lower():
+                delta = j_value - g_key
+                # print delta.total_seconds()
+                time_difference.append(abs(delta.total_seconds()))
+                break
+
+    print "\t\tMinimum Time Difference (in seconds):", min(time_difference)
+    print "\t\tMaximum Time Difference (in seconds):", max(time_difference)
+    print "\t\tAverage Time Difference (in seconds):", sum(time_difference)/len(time_difference)
+
+    '''
+    #print "commits:", commits
+    commit_list = []
+    for commit in commits:
+        commit_list.append(commit.split('\n'))
+
+    commit_info[hash] = commit_list
+    '''
+
+
 ############################################################################
 
 if __name__ == "__main__":
@@ -108,17 +176,14 @@ if __name__ == "__main__":
     # print "\tDownloading reported issues on JIRA for pdfbox..."
 
     #-----------------------------------------------------------------------
-    # TODO :
-    print "\t(2.1) :\n"
+    print "\t(2.1) Maximun, Minimum, and Average Time Difference per Bug Fix:\n"
     hashes = getHashes()
     CommitsFixBugs(hashes)
-    # git log --name-only --oneline
     print
 
     #-----------------------------------------------------------------------
-    # TODO :
-    print "\t(2.2) :\n"
-
+    print "\t(2.2) Maximun, Minimum, and Average Number of Files per Bug Fix:\n"
+    TimeDifferenceBugs()
     print
 
     #-----------------------------------------------------------------------
